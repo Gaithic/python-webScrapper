@@ -1,5 +1,6 @@
 from cgitb import html, text
 from csv import excel
+import requests
 from itertools import product
 from statistics import mode
 from turtle import title
@@ -16,7 +17,7 @@ print(excel.sheetnames)
 
 url = "https://www.tyroola.com.au/tyre/michelin/pcr/pilot-sport-4/?buy_3_for_4=0&instant_cash=0&clearance=0&rft=0"
 response = requests.get(url)
-# print(response.status_code)
+print(response.status_code)
 
 htmlcontent = response.content
 soup = BeautifulSoup(htmlcontent, 'html.parser')
@@ -31,8 +32,8 @@ sizes = []
 prices = []
 images = []
 
-value = json.loads(soup.find_all('script', type='application/ld+json').text)
-print(value)
+# value = json.loads(soup.find_all('script', type='application/ld+json').text)
+# print(value)
 
 for data in soup.find_all('div', attrs={'class': 'product-tile'}):
     # print(data)
@@ -49,8 +50,8 @@ for data in soup.find_all('div', attrs={'class': 'product-tile'}):
     # print(size.string)
     # ea = data.find('span', attrs={'class': 'product-tile__price-current-ea'})
     # value = data.find('div', class_="product-tile__price-current").span.text 
-    # value = data.find('span', class_="product-tile__price-current-value").get_text()
-    # print(value[0].text)
+    value = data.find('span', class_="product-tile__price-current-value").get_text()
+    print(value)
     # value = data.find('div', class_="product-tile__price-current").span(0).text
     # print(fullname, mod, si,value)
     sheet.append([fullname, mod, si, imagelink, value])
